@@ -27,9 +27,9 @@ return(
           isDragging={snapshot.isDragging}
           provided={provided}
         >
-          <span>
+          <p className="truncate">
             { text }
-          </span>
+          </p>
         </CardContainer>
           )}
     </Draggable>

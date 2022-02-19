@@ -7,6 +7,7 @@ import { useAppState } from "./state/AppStateContext"
 import { addTask } from "./state/actions"
 import { Droppable, Draggable, DraggableProvided } from "react-beautiful-dnd"
 import { List } from "./state/appStateReducer"
+import { useState } from "react";
 
 type ColumnProps = {
   text?: string
@@ -25,14 +26,22 @@ export const Column = ({
 
   const { getTasksByListId, dispatch } = useAppState()
   const tasks = getTasksByListId(id)
+  const [ error, setError ] = useState("")
 
+  const onAddTask = (text: string) =>{
+    if(text.length < 10 || text.length > 40){
+      setError("Length is in 1 - 40")
+    }else{
+      dispatch(addTask(text, id))
+    }
+  }
   return (
     <ColumnContainer
       innerRef={innerRef}
       provided={provided}
     >
       <ColumnContent>
-        <ColumnTitle>{text}</ColumnTitle>
+        <ColumnTitle className="truncate">{text}</ColumnTitle>
         <Droppable
           droppableId={id}
           type="CARD"
@@ -51,10 +60,15 @@ export const Column = ({
             </div>
           )}
         </Droppable>
-        <AddNewItem
-          toggleButtonText="+ Add another task"
-          onAdd={text => dispatch(addTask(text, id))}
-          dark/>
+        <div className="flex flex-col">
+          <AddNewItem
+            toggleButtonText="+ Add another task"
+            onAdd={text => onAddTask(text)}
+            dark/>
+            <div className="text-red-500 block bg-white">
+            { error }
+            </div>
+          </div>
       </ColumnContent> 
     </ColumnContainer>
   )
