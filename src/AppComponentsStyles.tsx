@@ -104,10 +104,10 @@ export const Footer: FC = () =>{
         <div
           className="flex justify-end p-4 bg-gray-600 rounded-lg gap-5 bg-opacity-20"
         >
-          <a href="" target="_blank">
+          <a href="https://github.com/hungtienvu/trello-clone-ts" target="_blank">
           💻 Folk me on Github
           </a>
-          <a href="#">👉🏻 Tutorial</a>
+          <a href="https://hungtienvu.com/trello-clone/" target="_blank">👉🏻 Tutorial</a>
         </div>
       
     </div>
