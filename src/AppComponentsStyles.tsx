@@ -1,13 +1,20 @@
 import cn from "classnames"
 import React, { FC } from "react"
+import { DroppableProvided, DraggableProvided } from "react-beautiful-dnd"
 
 type RefProp = {
   parentRef?: React.RefObject<HTMLDivElement>
 }
 
-export const AppContainer: FC<RefProp> = ({
+type AppContainerProps = {
+  provided: DroppableProvided
+  innerRef: (element: HTMLElement | null) => any;
+}
+
+export const AppContainer: FC<AppContainerProps> = ({
   children,
-  parentRef
+  provided,
+  innerRef
 }) => {
   return (
     <div  
@@ -21,7 +28,8 @@ export const AppContainer: FC<RefProp> = ({
         grow-1
         overflow-auto
         "
-        ref={parentRef}
+        ref={innerRef}
+        {...provided.droppableProps}
         >
     {children}
     </div>
@@ -29,12 +37,21 @@ export const AppContainer: FC<RefProp> = ({
 }
 
 
-export const ColumnContainer: FC<RefProp> =  (({children, parentRef, ...rest}) => {
+type ColumnContainerProps = {
+  provided: DraggableProvided
+  innerRef: (element: HTMLElement | null) => any;
+}
+export const ColumnContainer: FC<ColumnContainerProps> =  (({
+  children, 
+  innerRef, 
+  provided
+}) => {
  return (
     <div 
       className="w-[300px]"
-      ref={parentRef}
-      {...rest}
+      ref={innerRef}
+      {...provided.draggableProps}
+      {...provided.dragHandleProps}
       >
       { children }
     </div>
@@ -53,25 +70,28 @@ export const ColumnContent: FC<RefProp> = ({children, parentRef, ...rest}) => {
 }
 
 
-type CardContainerProps = RefProp & {
+type CardContainerProps = {
   isDragging?: boolean
+  innerRef: (element: HTMLElement | null) => any
+  provided: DraggableProvided
 }
 
 export const CardContainer: FC<CardContainerProps> =  (({
     children,
     isDragging,
-    parentRef,
-    ...rest
+    innerRef,
+    provided
   }) => {
   
   const classes = cn(
     "cursor-pointer mb-1 px-3 py-2 rounded shadow flex justify-between bg-white",
   )
-  return (
+  return (  
       <div 
         className={classes}
-        ref={parentRef}
-        {...rest}
+        ref={innerRef}
+        {...provided.dragHandleProps}
+        {...provided.draggableProps}
         >
           { children }
       </div>

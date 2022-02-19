@@ -5,21 +5,22 @@ import { AddNewItem } from "./AddNewItem"
 import { CardList } from "./Card"
 import { useAppState } from "./state/AppStateContext"
 import { addTask } from "./state/actions"
-import { Droppable, Draggable } from "react-beautiful-dnd"
+import { Droppable, Draggable, DraggableProvided } from "react-beautiful-dnd"
+import { List } from "./state/appStateReducer"
 
 type ColumnProps = {
   text?: string
   id: string
-  parentRef?: React.RefObject<HTMLDivElement>
+  innerRef: (element: HTMLElement | null) => any;
   index: number
-  rest?: object
+  provided: DraggableProvided
 }
 
 export const Column = ({ 
   text, 
   id, 
-  parentRef,
-  ...rest
+  innerRef,
+  provided
 }: ColumnProps) => {
 
   const { getTasksByListId, dispatch } = useAppState()
@@ -27,8 +28,8 @@ export const Column = ({
 
   return (
     <ColumnContainer
-      parentRef={parentRef}
-      {...rest}
+      innerRef={innerRef}
+      provided={provided}
     >
       <ColumnContent>
         <ColumnTitle>{text}</ColumnTitle>
@@ -60,7 +61,7 @@ export const Column = ({
 }
 
 type ColumnListProp = {
-  lists: ColumnProps[]
+  lists: List[]
 }
 
 export const ColumnList = ({lists}: ColumnListProp) => {
@@ -78,9 +79,10 @@ export const ColumnList = ({lists}: ColumnListProp) => {
               id={list.id} 
               index={index}
               key={list.id}
-              parentRef={provided.innerRef}
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
+              innerRef={provided.innerRef}
+              provided={provided}
+              // {...provided.draggableProps}
+              // {...provided.dragHandleProps}
             />
           )}
         </Draggable>

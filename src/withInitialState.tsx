@@ -5,7 +5,6 @@ import { collection, query, orderBy, getDocs} from "firebase/firestore";
 import { db } from "./utils/firebaseInit"
 import { Task, List } from "./state/appStateReducer"
 
-
 type InjectedProps = {
   initialState: AppState
 }
@@ -18,6 +17,8 @@ type PropsWithoutInjected<TBaseProps> = Omit<
   TBaseProps, 
   keyof InjectedProps>
 
+type TupleKeyTask = [string, Task | any]
+
 //LOADING State from FIREBASE
 
 const loadStateFirebase = async () => {
@@ -28,11 +29,14 @@ const loadStateFirebase = async () => {
   const loadedLists:List[] = []
 
   querySnapshot.forEach((doc) => {
+
     const list = doc.data()
+
     const tasks:Task[] = []
 
-    for (const [k, task] of Object.entries(list.tasks)){
-      tasks.push(task)
+    for (const task of Object.entries(list.tasks)){
+      const [id, value]: TupleKeyTask = task
+      tasks.push(value)
     }
 
     loadedLists.push(
@@ -61,7 +65,7 @@ export function withInitialState<TProps>(
       lists: []
     })
     const [isLoading, setIsLoading] = useState(true)
-    const [error, setError] = useState<Error | undefined>()
+    const [error, setError] = useState<Error | undefined | any>()
 
     useEffect(() => {
 

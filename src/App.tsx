@@ -19,8 +19,8 @@ function App() {
         {provided =>  (
           //not sure how to fix this
             <AppContainer
-              parentRef={provided.innerRef}
-              {...provided.droppableProps}
+              innerRef={provided.innerRef}
+              provided={provided}
             >
               <ColumnList lists={lists}/>
               { provided.placeholder }

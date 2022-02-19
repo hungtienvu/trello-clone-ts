@@ -22,7 +22,7 @@ const saveStateToFirebase = async (state: AppState) =>{
   const { lists } = state
   for(const [k, list] of lists.entries()){
     //TODO: how to fix this issue? any helps?
-    const tasksInObjects = {}
+    const tasksInObjects: any = {}
     for(const [k, task] of list.tasks.entries()){
       tasksInObjects[task.id] = {
         id: task.id,
@@ -41,7 +41,6 @@ const saveStateToFirebase = async (state: AppState) =>{
 }
 
 type AppSateContextProps = {
-  draggedItem: DragItem | null
   lists: List[]
   getTasksByListId(id: string): Task[]
   dispatch: Dispatch<Action>
@@ -68,7 +67,7 @@ export const AppStateProvider = withInitialState<AppStateProviderProps>(
   const [state, dispatch] = useImmerReducer(appStateReducer, initialState)
 
   //destruct the state object
-  const {draggedItem, lists} = state
+  const {lists} = state
 
   //save sate when somethinge change?
   useEffect(() => {
@@ -82,7 +81,6 @@ export const AppStateProvider = withInitialState<AppStateProviderProps>(
 
   return (
     <AppSateContext.Provider value={{
-        draggedItem, 
         lists, 
         getTasksByListId, 
         dispatch 

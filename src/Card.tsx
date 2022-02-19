@@ -1,22 +1,19 @@
 import { CardContainer } from "./AppComponentsStyles"
-import { memo } from "react"
-import { Draggable } from "react-beautiful-dnd"
+import { Draggable, DraggableProvided } from "react-beautiful-dnd"
+import { Task } from "./state/appStateReducer"
 
 type CardProps = { 
   text: string
   id: string
   columnId: string
-  parentRef?: React.RefObject<HTMLDivElement>,
-  index: number
+  index: number,
 }
 
 export const Card = ({
   text,
   id,
   columnId,
-  parentRef,
-  index,
-  ...rest
+  index
 } : CardProps) => {
 
 return(
@@ -26,10 +23,9 @@ return(
       >
       {(provided, snapshot) => (
         <CardContainer
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          parentRef={provided.innerRef}
+          innerRef={provided.innerRef}
           isDragging={snapshot.isDragging}
+          provided={provided}
         >
           <span>
             { text }
@@ -40,7 +36,7 @@ return(
 )}
 
 type CardListProps = {
-  tasks: CardProps[],
+  tasks: Task[],
   columnId: string
 }
 
