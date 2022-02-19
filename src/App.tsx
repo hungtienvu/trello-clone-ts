@@ -13,7 +13,7 @@ function App() {
 
   const onAddList = (text: string) =>{
     if(text.length < 10 || text.length > 40){
-      setError("Length is in 1 - 40")
+      setError("Length is in 10 - 40")
     }else{
       dispatch(addList(text))
     }
